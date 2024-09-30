@@ -8,7 +8,7 @@ import { LogicService } from '../../services/logic.service';
   templateUrl: './authpage.component.html',
   styleUrl: './authpage.component.css'
 })
-export class AuthpageComponent implements OnInit{
+export class AuthpageComponent implements OnInit{ 
   authForm!: FormGroup;
   loading:boolean =false;
 
@@ -18,7 +18,8 @@ export class AuthpageComponent implements OnInit{
   ngOnInit(): void {
     this.intiForm();
   }
-
+// tamoah@gmail.com
+// Mantee
 
   authenticateUser(){
     let formData = this.authForm.value;

@@ -7,6 +7,7 @@ import { AuthpageComponent } from '../pages/authpage/authpage.component';
 import { MainpageComponent } from '../pages/mainpage/mainpage.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { provideHttpClient } from '@angular/common/http';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
   ],
   providers: [provideHttpClient()],
   bootstrap: [AppComponent]

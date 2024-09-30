@@ -1,1 +1,66 @@
-<p>mainpage works!</p>
+<div class="container fluid ">
+
+    <!-- ================= view list department ============== -->
+    <div class="container py-3" *ngIf="formView.listView">
+       
+        <div class="container d-flex justify-content-between mt-3">
+            <h3>List of Departments</h3>
+            <div class="d-flex justify-content-end ">
+                <button type="button" *ngIf="formView.listView" class="btn btn-success" (click)=" openForm()"> New Department    </button>
+                <button type="button" *ngIf="formView.createView" class="btn btn-secondary" (click)=" closeForm()">Close  </button>
+    
+            </div>
+    
+         </div>
+        <ol class="list-group list-group-numbered pt-2" >
+            <li class="list-group-item d-flex justify-content-between align-items-start" *ngFor="let deptItem of deptList">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold"> {{deptItem.name}}</div>
+                 {{deptItem.managerEmail}}
+              </div>
+              <span class="  text-bg-primary ">
+                <button class="btn btn-outline-success btn-sm" (click)="updateDept(deptItem)"><i class="bi bi-pen-fill"></i></button>
+                <button class="btn btn-outline-danger btn-sm" (click)="deleteDept(deptItem)"><i class="bi bi-trash-fill"></i></button>
+
+              </span>
+            </li>
+          
+          </ol>
+
+     </div>
+
+    <!-- ===================== form to create new department  =========== -->
+    <div class="row justify-content-center" *ngIf="formView.createView">
+
+        <div class="d-flex justify-content-end mt-3">
+            <button type="button"   class="btn btn-secondary" (click)=" closeForm()">Close  </button>
+
+        </div>
+
+        <div class="col-md-8">
+            <div class="form-container">
+                <h2 class="text-center">Create new daepartment</h2>
+                <form [formGroup]="dapartmentForm" (ngSubmit)="newDept()">
+                 
+                    <div class="form-group">
+                        <label for="additional-info"> Department Name  </label>
+                        <input type="text" id="additional-info" name="additional-info" formControlName="name"  placeholder="   ">
+                    </div>
+ 
+                    <div class="form-group">
+                        <label for="phone">Manager Name  </label>
+                        <input type="text" formControlName="managerName"  placeholder=" ">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Manager Email</label>
+                        <input type="email" id="email" name="email" formControlName="managerEmail"  placeholder="   ">
+                    </div>
+                  
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">Submit  </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
