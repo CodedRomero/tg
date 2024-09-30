@@ -1,0 +1,41 @@
+<div class="container-fluid vh-100 d-flex justify-content-center align-items-center">
+    <div class="row w-100 login-container">
+        <!-- Left side - Login Form -->
+        <div class="col-lg-6 col-md-6 col-12 bg-white d-flex flex-column justify-content-center p-5">
+            <div class="text-center mb-5">
+                <!-- <img src="logo.png" alt="Logo" class="logo mb-3"> -->
+                <h2 class="fw-bold">LOGIN</h2>
+            </div>
+            <form [formGroup]="authForm" (ngSubmit)="authenticateUser()">
+                <div class="form-group mb-4">
+                    <label for="email" class="form-label">username</label>
+                    <input type="email" class="form-control"   placeholder="yourname@email.com" formControlName="username" required>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="**********" formControlName="password" required>
+                </div>
+                <!-- <div class="d-flex justify-content-between align-items-center">
+                    <a href="#" class="text-muted small">Forgot your password?</a>
+                </div> -->
+                <div class="d-flex justify-content-center" *ngIf="loading ==true">
+                    <div class="spinner-border" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary w-100 login-btn">LOGIN</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Right side - Company Info -->
+        <div class="col-lg-6 col-md-6 d-none d-md-flex bg-primary justify-content-center align-items-center">
+            <div class="text-center text-white">
+                <!-- <img src="company-logo.png" alt="Company Logo" class="company-logo mb-3"> -->
+                <h4 class="company-name">TECHNOLOGY GROUP ADVANTAGE</h4>
+            </div>
+        </div>
+    </div>
+</div>
