@@ -3,6 +3,7 @@ import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { LogicService } from '../../services/logic.service';
 import { FormView } from '../../services/form-view';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mainpage',
@@ -13,8 +14,9 @@ export class MainpageComponent implements OnInit{
 dapartmentForm!: FormGroup;
 formView: FormView = FormView.listView();
 deptList:any ;
+loading:boolean =false;
 
-constructor(private fb: UntypedFormBuilder,private logicService:LogicService){}
+constructor(private fb: UntypedFormBuilder,private logicService:LogicService,private router:Router){}
 
 ngOnInit(): void {
   this.intiForm();
@@ -22,9 +24,11 @@ ngOnInit(): void {
 }
 
 getDept(){
+  this.loading = true;
   this.logicService.getDepartments().then((data)=>{
     console.log(data);
     this.deptList = data;
+    this.loading = false;
   });
 }
 
@@ -39,6 +43,42 @@ closeForm(){
 }
 
 newDept(){
+  let formData = this.dapartmentForm.value;
+  console.log(formData);
+
+  // if (this.dapartmentForm.valid) {
+
+  // ============ creat new department =========
+  if(formData.id == null){
+    console.log('posting');
+    Swal.fire({
+      // title: "Are you sure?",
+      text: "Submit department?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes"
+    }).then((result) => {
+      if (result.isConfirmed) {
+    let response =  this.logicService.createNew(formData);
+    console.log(response);
+      }
+    })
+    // ===========edit department ===========
+  }else{
+    console.log('edit');
+    let response = this.logicService.editDept(formData);
+    console.log(response);
+  }
+
+// } else {
+//   Swal.fire({
+//     title: "All fields required",
+//     icon: "error"
+//   });
+// }
+
 }
 
 updateDept(item:any){
@@ -47,7 +87,7 @@ updateDept(item:any){
   this.dapartmentForm.patchValue(item);
 }
 
-deleteDept(item:any){
+deleteDept(id:any){
   Swal.fire({
     // title: "Are you sure?",
     text: "Delete department?",
@@ -58,13 +98,29 @@ deleteDept(item:any){
     confirmButtonText: "Yes"
   }).then((result) => {
     if (result.isConfirmed) {
-      // this.backend.deleteFunction(`/tenders/${tenders.id}`).then((v)=>{
-      //   // this.tenderpostingForm.reset();
-      // });
+        this.logicService.deleteDept(id);
     }
   });
 }
 
+
+logoutFunction(){
+  Swal.fire({
+    // title: "Are you sure?",
+    text: "Do you want to logout?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes"
+  }).then((result) => {
+    if (result.isConfirmed) {
+   sessionStorage.clear(); 
+  this.router.navigate(['/'])  
+    }
+  });
+ 
+}
 
   intiForm()
   {
@@ -72,7 +128,11 @@ deleteDept(item:any){
       id:null,
       managerEmail:null,
        name: null,
-       managerName:null
+       managerName:null,
+       createdAt:null,
+      
+       createdBy:null,
+       empId:null
     })
    }
 }

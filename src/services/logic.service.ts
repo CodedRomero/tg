@@ -36,7 +36,6 @@ export class LogicService {
           padding:CryptoJS.pad.Pkcs7
         } );
 
-
         let newData =    decryptedMessage.toString(CryptoJS.enc.Utf8)
         let userObj = JSON.parse(newData)
         console.log(userObj.token);
@@ -46,28 +45,103 @@ export class LogicService {
           this.router.navigate(['/main']); 
       }
  
-
     },(error)=>{
       console.log(  error.error['msg'] ) ;
 
       Swal.fire({
         title: "Oops",
-        text:  error.error['msg'],
+        text:   'Something went wrong, Please try again',
         icon: "error"
       });
     }); 
   }
 
 
-  createNew(){
+  async createNew(data:any){
+    let token =   sessionStorage.getItem('userToken');
+   return this.http.post(this.baseUrl + '/api/v1/department/add',data, { headers: new HttpHeaders({'Authorization': 'Bearer ' + token,'Content-Type':'application/json'})})
+   .subscribe((val:any)=>{
+    console.log( val.data) ;
+
+    Swal.fire({
+      title: "Saved!",
+   
+      icon: "success"
+    });
+
+    setTimeout(() => 
+      {
+        location.reload();
+      }, 1000);
+
+  },(error)=>{
+    // console.log(  error.error['msg'] ) ;
+
+    Swal.fire({
+      title: "Oops",
+      text:   'Something went wrong, Please try again',
+      icon: "error"
+    });
+  });
+
   }
 
   getDepartments(){
     let token =   sessionStorage.getItem('userToken');
    return this.http.get(this.baseUrl + '/api/v1/department/list', { headers: new HttpHeaders({'Authorization': 'Bearer ' + token,'Content-Type':'application/json'})}).toPromise();
+    }
+
+  async  editDept(data:any){
+    let token = sessionStorage.getItem('userToken');
+   return this.http.post(this.baseUrl + '/api/v1/department/edit',data, { headers: new HttpHeaders({'Authorization': 'Bearer ' + token,'Content-Type':'application/json'})}) 
+   .subscribe((val:any)=>{
+
+    Swal.fire({
+      title: "Saved!",
+      icon: "success"
+    });
+    setTimeout(() => 
+      {
+        location.reload();
+      }, 1000);
+ 
+  },(error)=>{
+    // console.log(  error.error['msg'] ) ;
+
+    Swal.fire({
+      title: "Oops",
+      text:   'Something went wrong, Please try again',
+      icon: "error"
+    });
+  });
+
   }
 
-  editDept(){}
+  async deleteDept(id:any){
+    let token =  sessionStorage.getItem('userToken');
+   return this.http.delete(this.baseUrl + `/api/v1/department/${id}`, { headers: new HttpHeaders({'Authorization': 'Bearer ' + token,'Content-Type':'application/json'})})
+   .subscribe((val:any)=>{
+  
 
-  deleteDept(){}
+    Swal.fire({
+      title: "Deleted!",
+      icon: "success"
+    });
+
+    setTimeout(() => 
+      {
+        location.reload();
+      }, 1000);
+
+  },(error)=>{
+    // console.log(  error.error['msg'] ) ;
+
+    Swal.fire({
+      title: "Oops",
+      text:   'Something went wrong, Please try again',
+      icon: "error"
+    });
+  });
+
+  }
 }
